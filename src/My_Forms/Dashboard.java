@@ -41,8 +41,25 @@ public class Dashboard extends javax.swing.JFrame {
         //make the image fit the jlabel
         Image image = imgIco.getImage().getScaledInstance(jLabel_Dashboard_Logo.getWidth(),jLabel_Dashboard_Logo.getHeight(),Image.SCALE_SMOOTH);
         jLabel_Dashboard_Logo.setIcon(new ImageIcon(image));
+        
+        //Add borders to the buttons
+        addBorders();
+        //Hover Effect
         buttonHoverEffect();
     }
+    
+    //Function to add border to all the button in the jPanel Menu
+    public void addBorders(){
+        //Get all the component in the jPanel Menu
+        Component[] comps = jPanel_Menu.getComponents();
+        for(var comp : comps){
+            //Check if the component is a button
+            if(comp instanceof JButton button){
+                button.setBorder(buttonBorder0);
+            }             
+        }
+    }
+    
     
     //The button border
     Border buttonBorder1 = BorderFactory.createMatteBorder(1,1,1,1,Color.white);
@@ -60,6 +77,7 @@ public class Dashboard extends javax.swing.JFrame {
                     public void mouseEntered(MouseEvent evt){
                         button.setBorder(buttonBorder1);
                     }
+                    @Override
                     public void mouseExited(MouseEvent evt){
                         button.setBorder(buttonBorder0);
                     }
@@ -149,6 +167,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Add a new one");
         jButton1.setContentAreaFilled(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -160,6 +179,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Add a new one");
         jButton2.setContentAreaFilled(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -171,6 +191,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Add a new one");
         jButton3.setContentAreaFilled(false);
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -182,6 +203,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Add a new one");
         jButton4.setContentAreaFilled(false);
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -543,7 +565,6 @@ public class Dashboard extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         java.awt.EventQueue.invokeLater(() -> {
             new Dashboard().setVisible(true);
         });
