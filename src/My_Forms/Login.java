@@ -1,6 +1,7 @@
 package My_Forms;
 
 import My_Components.PanelCover;
+import My_Components.PanelLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -15,9 +16,11 @@ public class Login extends javax.swing.JFrame {
     
     private MigLayout layout;
     private PanelCover cover;
+    private PanelLogin login;
     private boolean isLogin;
     private final double addSize = 30;
     private final double coverSize = 40;
+    private final double loginSize = 60;
     private final DecimalFormat df = new DecimalFormat("##0.###", DecimalFormatSymbols.getInstance(Locale.US));
     
     public Login() {
@@ -28,10 +31,12 @@ public class Login extends javax.swing.JFrame {
     private void init(){ 
         layout = new MigLayout("fill, insets 0");
         cover = new PanelCover();
+        login = new PanelLogin();
         TimingTarget target = new TimingTargetAdapter(){
             @Override
             public void timingEvent(float fraction){
                 double fractionCover;
+                double fractionLogin;
                 double size = coverSize;
                 if(fraction <= 0.5f){
                     size += fraction * addSize;
@@ -40,11 +45,18 @@ public class Login extends javax.swing.JFrame {
                 }
                 if(isLogin){
                     fractionCover = 1f - fraction;
+                    fractionLogin = fraction;
                 } else{
                     fractionCover = fraction;
+                    fractionLogin = 1f - fraction;
+                }
+                if(fraction >= 0.5f){
+                    login.showWelcome(isLogin);
                 }
                 fractionCover = Double.valueOf(df.format(fractionCover));
-                layout.setComponentConstraints(cover, "width " + coverSize + "%, pos " + fractionCover + "al 0 n 100%");
+                fractionLogin = Double.valueOf(df.format(fractionLogin));
+                layout.setComponentConstraints(cover, "width " + size + "%, pos " + fractionCover + "al 0 n 100%");
+                layout.setComponentConstraints(login, "width " + loginSize + "%, pos " + fractionLogin + "al 0 n 100%");
                 bg.revalidate();
             }
             
@@ -53,15 +65,19 @@ public class Login extends javax.swing.JFrame {
                 isLogin = !isLogin;
             }
         };
-        Animator animator = new Animator(1000, target);
+        Animator animator = new Animator(800, target);
         animator.setAcceleration(0.5f);
         animator.setDeceleration(0.5f);
         animator.setResolution(0); // for smooth animation
         bg.setLayout(layout);
         bg.add(cover,"width " + coverSize + "%, pos 0al 0 n 100%"); 
-        cover.addEvent((ActionEvent ae) -> {
-            if(!animator.isRunning()){
-                animator.start();
+        bg.add(login,"width " + loginSize + "%, pos 1al 0 n 100%");
+        cover.addEvent(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae){
+                if(!animator.isRunning()){
+                    animator.start();
+                }
             }
         });
         
