@@ -1,4 +1,4 @@
-package My_Forms;
+package Forms;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -120,7 +120,6 @@ public class Dashboard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1086, 650));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setToolTipText("");
