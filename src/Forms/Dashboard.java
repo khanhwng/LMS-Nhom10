@@ -37,7 +37,7 @@ public class Dashboard extends javax.swing.JFrame {
     //Function to display a image
     public void displayImage(){
         //get the image
-        ImageIcon imgIco = new ImageIcon(getClass().getResource("/My_Images/dashboard_logo.png"));
+        ImageIcon imgIco = new ImageIcon(getClass().getResource("/Images/dashboard_logo.png"));
         //make the image fit the jlabel
         Image image = imgIco.getImage().getScaledInstance(jLabel_Dashboard_Logo.getWidth(),jLabel_Dashboard_Logo.getHeight(),Image.SCALE_SMOOTH);
         jLabel_Dashboard_Logo.setIcon(new ImageIcon(image));
