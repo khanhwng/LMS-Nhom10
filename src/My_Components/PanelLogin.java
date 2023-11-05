@@ -16,8 +16,8 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         initComponents();
         initWelcome();
         initLogin();
-        login.setVisible(false);
-        welcome.setVisible(true);
+        login.setVisible(true);
+        welcome.setVisible(false);
     }
     private void initWelcome(){
         welcome.setLayout(new MigLayout("wrap", "push[center]push"));
@@ -54,11 +54,11 @@ public class PanelLogin extends javax.swing.JLayeredPane {
     
     public void showWelcome(boolean show){
         if(show){
-            welcome.setVisible(true);
-            login.setVisible(false);
-        } else{
             welcome.setVisible(false);
             login.setVisible(true);
+        } else{
+            welcome.setVisible(true);
+            login.setVisible(false);
         }
     }
     

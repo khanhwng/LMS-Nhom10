@@ -3,7 +3,6 @@ package My_Forms;
 import My_Components.PanelCover;
 import My_Components.PanelLogin;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -46,9 +45,19 @@ public class Login extends javax.swing.JFrame {
                 if(isLogin){
                     fractionCover = 1f - fraction;
                     fractionLogin = fraction;
+                    if(fraction >= 0.5f){
+                        cover.welcomeRight(fractionCover * 100);
+                    } else{
+                        cover.loginRight((1f - fraction) * 100);
+                    }
                 } else{
                     fractionCover = fraction;
                     fractionLogin = 1f - fraction;
+                    if(fraction <= 0.5f){
+                        cover.welcomeLeft(fraction * 100);
+                    } else {
+                        cover.loginLeft((1f - fraction) * 100);
+                    }
                 }
                 if(fraction >= 0.5f){
                     login.showWelcome(isLogin);
@@ -72,12 +81,9 @@ public class Login extends javax.swing.JFrame {
         bg.setLayout(layout);
         bg.add(cover,"width " + coverSize + "%, pos 0al 0 n 100%"); 
         bg.add(login,"width " + loginSize + "%, pos 1al 0 n 100%");
-        cover.addEvent(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae){
-                if(!animator.isRunning()){
-                    animator.start();
-                }
+        cover.addEvent((ActionEvent ae) -> {
+            if(!animator.isRunning()){
+                animator.start();
             }
         });
         

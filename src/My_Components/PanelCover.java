@@ -8,11 +8,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 public class PanelCover extends javax.swing.JPanel {
-
+    
+    private final DecimalFormat df = new DecimalFormat("##0.###");
     private ActionListener event;
     private MigLayout layout;
     private JLabel title;
@@ -29,27 +31,24 @@ public class PanelCover extends javax.swing.JPanel {
         init();
     }
     private void init(){
-        title = new JLabel("Welcome Back!");
+        title = new JLabel("Hello, Friend");
         title.setFont(new Font("sansserif",1,30));
         title.setForeground(new Color(245,245,245));
         add(title);
-        description = new JLabel("To keep connected with us, please");
+        description = new JLabel("A system that help you");
         description.setForeground(new Color(245,245,245));
         add(description);
-        description1 = new JLabel("login with your personal info");
+        description1 = new JLabel("manage library easily !");
         description1.setForeground(new Color(245,245,245));
         add(description1);
         button = new ButtonOutLine();
         button.setBackground(new Color(255,255,255));
         button.setForeground(new Color(255,255,255));
-        button.setText("SIGN IN");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                event.actionPerformed(ae);  
-            }
+        button.setText("BACK TO WELCOME PAGE");
+        button.addActionListener((ActionEvent ae) -> {
+            event.actionPerformed(ae);
         });
-        add(button);
+        add(button, "w 60%, h 40");
     }
     
     
@@ -81,6 +80,55 @@ public class PanelCover extends javax.swing.JPanel {
     public void addEvent(ActionListener event){
         this.event = event;
     }
+    
+    public void welcomeLeft(double v){
+        v = Double.parseDouble(df.format(v));
+        login(false);
+        layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0");
+        layout.setComponentConstraints(description, "pad 0 -" + v + "% 0 0");
+        layout.setComponentConstraints(description1, "pad 0 -" + v + "% 0 0");
+    }
+    public void welcomeRight(double v) {
+        v = Double.parseDouble(df.format(v));
+        login(false);
+        layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0");
+        layout.setComponentConstraints(description, "pad 0 -" + v + "% 0 0");
+        layout.setComponentConstraints(description1, "pad 0 -" + v + "% 0 0");
+    }
+    public void loginLeft(double v) {
+        v = Double.parseDouble(df.format(v));
+        login(true);
+        layout.setComponentConstraints(title, "pad 0 " + v + "% 0 " + v + "%");
+        layout.setComponentConstraints(description, "pad 0 " + v + "% 0 " + v + "%");
+        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
+    }
+
+    public void loginRight(double v) {
+        v = Double.parseDouble(df.format(v));
+        login(true);
+        layout.setComponentConstraints(title, "pad 0 " + v + "% 0 " + v + "%");
+        layout.setComponentConstraints(description, "pad 0 " + v + "% 0 " + v + "%");
+        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
+    }
+    
+    private void login(boolean login){
+         if (this.isLogin != login) {
+            if (login) {
+                title.setText("Hello, Friend !");
+                description.setText("To use our system please");
+                description1.setText("login with your personal info");
+                button.setText("SIGN IN");
+            } else {
+                title.setText("Welcome !");
+                description.setText("To use our system please");
+                description1.setText("login with your personal info");
+                button.setText("BACK TO WELCOME PAGE");
+            }
+            this.isLogin = login;
+        }
+    }
+    
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
