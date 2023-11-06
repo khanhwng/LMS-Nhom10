@@ -20,7 +20,7 @@ public class Dashboard extends javax.swing.JFrame {
         //Border for "Library" box
         Border panelHeaderBorder = BorderFactory.createMatteBorder(0,0,1,0,Color.white);
         jPanel_Header.setBorder(panelHeaderBorder);
-        //Border for 3 boxes
+        //Border for 5 boxes
         Border panelHeader_1_Border = BorderFactory.createMatteBorder(0,0,3,0,new Color(235,125,22));
         jPanel_1_header.setBorder(panelHeader_1_Border);
         Border panelHeader_2_Border = BorderFactory.createMatteBorder(0,0,3,0,new Color(26,138,32));

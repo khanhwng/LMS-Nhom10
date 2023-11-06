@@ -145,15 +145,13 @@ public class Login extends javax.swing.JFrame {
                     dash_f.setVisible(true);
                     this.dispose();
                 } else{
-                    JOptionPane.showMessageDialog(null, "Invalid Username or Password !", "ERROR", 2);
+                    JOptionPane.showMessageDialog(null, "Incorrect Username or Password !", "ERROR", 2);
                 }
                                
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
     }//GEN-LAST:event_cmdLoginActionPerformed
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
