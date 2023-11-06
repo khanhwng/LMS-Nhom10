@@ -7,8 +7,8 @@ Nhóm 10 - KTPMUID has 4 members:
    
 We decided to build a desktop app named Library Management System, which help staff of a small library can manage books, members,...; borrowing and returning books.
 
-In this project, we use some app / IDE to build:
- + Netbeans IDE (Java)
+In this project, we use some App / IDE / Framework to build:
+ + Netbeans IDE (Java Programming Language & Java Swing)
  + MySQL Database
  + phpMyAdmin
  + Xampp Server
