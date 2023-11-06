@@ -6,6 +6,7 @@ Nhóm 10 - KTPMUID has 4 members:
  - Trần Phương Anh 20213811
    
 We decided to build a desktop app named Library Management System, which help staff of a small library can manage books, members,...; borrowing and returning books.
+
 In this project, we use some app / IDE to build:
  + Netbeans IDE (Java)
  + MySQL Database
