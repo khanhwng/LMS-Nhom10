@@ -1,7 +1,13 @@
 package Forms;
 
+import Classes.DB;
 import java.awt.Color;
-
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
 
     public Login() {
@@ -26,6 +32,11 @@ public class Login extends javax.swing.JFrame {
         panel.setOpaque(false);
 
         txtUser.setHint("User Name");
+        txtUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserActionPerformed(evt);
+            }
+        });
 
         txtPassword.setHint("Password");
 
@@ -103,9 +114,48 @@ public class Login extends javax.swing.JFrame {
     
     //Login button
     private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
+        //Get the username and Password
         String username = txtUser.getText();
         String password = String.valueOf(txtPassword.getPassword());
+        
+        ResultSet rs;
+        PreparedStatement ps;
+        
+        String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
+        //Check if the fields are empty
+        if(username.trim().equals("") && password.trim().equals("")){
+            JOptionPane.showMessageDialog(null, "Username and Password are BLANK !", "ERROR", 2);
+        } else if(username.trim().equals("")){
+            JOptionPane.showMessageDialog(null, "Username are BLANK !", "ERROR", 2);
+        } else if(password.trim().equals("")){
+            JOptionPane.showMessageDialog(null, "Password are BLANK !", "ERROR", 2);
+        } else{
+            try {
+                ps = DB.getConnection().prepareStatement(query);
+                ps.setString(1, username);
+                ps.setString(2, password);
+                
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    System.out.println("YES");
+                } else{
+                    System.out.println("NO");
+                }
+                
+                
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
     }//GEN-LAST:event_cmdLoginActionPerformed
+
+    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

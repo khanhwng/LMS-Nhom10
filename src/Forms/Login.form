@@ -103,6 +103,9 @@
               <Properties>
                 <Property name="hint" type="java.lang.String" value="User Name"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUserActionPerformed"/>
+              </Events>
             </Component>
             <Component class="login_extra.PasswordField" name="txtPassword">
               <Properties>
