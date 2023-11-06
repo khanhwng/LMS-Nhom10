@@ -13,5 +13,5 @@ In this project, we use some App / IDE / Framework to build:
  + phpMyAdmin (to manage database)
  + Xampp Server (to create a local server)
    
-Beside that, we use some image resources like DevianArt, Pixabay, Canva to get beautiful image and book cover.
+Beside that, we use some image resources like DevianArt, Pixabay, Canva to get beautiful images and books cover.
 
