@@ -11,5 +11,6 @@ In this project, we use some app / IDE to build:
  + MySQL Database
  + phpMyAdmin
  + Xampp Server
+   
 Beside that, we use some image resource like DevianArt, Pixabay, Canva to get beautiful image and book cover.
 
