@@ -121,6 +121,7 @@ public class Login extends javax.swing.JFrame {
         ResultSet rs;
         PreparedStatement ps;
         
+        //The select query
         String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
         //Check if the fields are empty
         if(username.trim().equals("") && password.trim().equals("")){
@@ -131,20 +132,22 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Password are BLANK !", "ERROR", 2);
         } else{
             try {
+                //get the connection from class DB
                 ps = DB.getConnection().prepareStatement(query);
                 ps.setString(1, username);
                 ps.setString(2, password);
                 
                 rs = ps.executeQuery();
+                
+                //Check if the user is exist                
                 if(rs.next()){
-                    System.out.println("YES");
+                    Dashboard dash_f = new Dashboard();
+                    dash_f.setVisible(true);
+                    this.dispose();
                 } else{
-                    System.out.println("NO");
+                    JOptionPane.showMessageDialog(null, "Invalid Username or Password !", "ERROR", 2);
                 }
-                
-                
-                
-                
+                               
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
