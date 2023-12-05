@@ -1,4 +1,3 @@
-LMS-Nhom10
 Nhóm 10 - KTPMUID has 4 members:
 
 Hoàng Khánh Hưng 20210418 (C)
