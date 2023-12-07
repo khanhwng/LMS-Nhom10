@@ -18,10 +18,26 @@ import javax.swing.JTable;
  */
 public class Func_Class {
     // create a function to display the image in jlabel
-    public void displayImage(int width, int height, String imagePath, JLabel label)
+    public void displayImage(int width, int height, byte[] imagebyte, String imagePath, JLabel label)
     {
+        ImageIcon imgIco;
         // get the image
-        ImageIcon imgIco = new ImageIcon(getClass().getResource(imagePath));
+        if(imagebyte !=null)//get image using bytes
+        {
+            imgIco = new ImageIcon(imagebyte);
+        }
+        else    //get image using path
+        {
+            try {
+                //get image from the project resource
+                imgIco = new ImageIcon(getClass().getResource(imagePath));
+  
+            } catch (Exception e) 
+            {
+                //get icon from the desktop
+                imgIco = new ImageIcon((imagePath));
+            }
+        }
         
         // make the image fit the jlabel
         Image image = imgIco.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);

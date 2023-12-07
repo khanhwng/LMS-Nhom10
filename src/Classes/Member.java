@@ -1,5 +1,6 @@
 package Classes;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class Member {
         this.lastName = _lname;
         this.phone = _phone;
         this.email = _email;
-        this.gender = _gender;
+        this.gender = gender;
         this.picture = _picture;
     }
     
@@ -150,7 +151,7 @@ public class Member {
     // remove member by id function
     public void removeMember(int _id)
     {
-        String removeQuery = "DELETE FROM `member` WHERE `id` = ?";
+        String removeQuery = "DELETE FROM `members` WHERE `id` = ?";
         try {
             PreparedStatement ps = DB.getConnection().prepareStatement(removeQuery);
             ps.setInt(1, _id);
@@ -167,5 +168,41 @@ public class Member {
             Logger.getLogger(Member.class.getName()).log(Level.SEVERE, null, ex);
         }       
     }
-
+    
+    //get member by id
+    public Member getMemberById(Integer _id) throws SQLException
+    {
+        Func_Class func = new Func_Class();
+        String query="SELECT * FROM `members` WHERE `id`="+_id;
+        ResultSet rs = func.getData(query);
+        if(rs.next())
+        {
+            return new Member(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5), rs.getString("gender"),rs.getBytes(7));
+        }
+        else{
+            
+            return null; 
+        }
+    }
+       // function to populate an arrayList with members
+    public ArrayList<Member> membersList()
+    {
+        ArrayList<Member> mList = new ArrayList<>();
+        Classes.Func_Class func = new Classes.Func_Class();
+               
+        try {
+            ResultSet rs = func.getData("SELECT * FROM `members`");                   
+            Member member;
+            
+            while(rs.next())
+            {
+                member = new Member(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("phone"), rs.getString("email"), rs.getString("gender"),rs.getBytes("picture"));
+                mList.add(member);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Member.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return mList;
+    }
 }

@@ -1,7 +1,6 @@
 package Forms;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -32,7 +31,7 @@ public class ManageAuthorsForm extends javax.swing.JFrame {
         
         // display image in the top
         Classes.Func_Class func = new Classes.Func_Class();
-        func.displayImage(75, 60, "/Images/notepad.png", jLabel_FormTitle);
+        func.displayImage(75, 60,null, "/Images/notepad.png", jLabel_FormTitle);
         
         // customize the jtable
         func.customTable(jTable_Authors_);

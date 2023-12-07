@@ -1,5 +1,6 @@
 package Forms;
 
+import Classes.Member;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,18 +9,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import javax.swing.JFileChooser;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
 /**
  *
  * @author Champion T
  */
-public class AddMemberForm extends javax.swing.JFrame {
+public class EditMemberForm extends javax.swing.JFrame {
 
     /**
      * Creates new form ManageGenresForm
@@ -28,10 +29,12 @@ public class AddMemberForm extends javax.swing.JFrame {
     // create a member object
     Classes.Member member = new Classes.Member();
     
+// create a Fun class instance
+    Classes.Func_Class func = new Classes.Func_Class();
     // create a variable to store the profile picture path
     String imagePath = null;
     
-    public AddMemberForm() {
+    public EditMemberForm() {
         initComponents();
         
         // center the form
@@ -41,9 +44,15 @@ public class AddMemberForm extends javax.swing.JFrame {
         Border panelHeaderBorder = BorderFactory.createMatteBorder(3,3,3,3,new Color(1, 152, 117));
         jPanel1.setBorder(panelHeaderBorder);
         
+        //add border to the jlabelImage
+        Border JlabelImageBorder = BorderFactory.createMatteBorder(3,3,3,3,new Color(0, 0, 0));
+        jLabel_Image.setBorder(JlabelImageBorder);
+        
         // display image in the top
-        Classes.Func_Class func = new Classes.Func_Class();
-        func.displayImage(75, 60,null, "/Images/member.png", jLabel_FormTitle);
+        //we will display the image using the path
+        //so we will set the imagebyte to null
+        
+        func.displayImage(112, 93,null, "/Images/member.png", jLabel_FormTitle);
         
         // hide the jlabel "empty name massage"
         jLabel_EmptyFirstName_.setVisible(false);
@@ -63,12 +72,14 @@ public class AddMemberForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jTextField_About = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField_FirstName1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel_FormTitle = new javax.swing.JLabel();
         jLabel_CloseForm_ = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField_FirstName = new javax.swing.JTextField();
-        jButton_Add_ = new javax.swing.JButton();
+        jButton_Edit_ = new javax.swing.JButton();
         jLabel_EmptyFirstName_ = new javax.swing.JLabel();
         jLabel_EmptyLastName_ = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -81,8 +92,12 @@ public class AddMemberForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBox_Gender = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jLabel_ImagePath = new javax.swing.JLabel();
         jButton_SelectProfilePicture_ = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField_Id = new javax.swing.JTextField();
+        jLabel_Image = new javax.swing.JLabel();
+        jLabel_ImagePath = new javax.swing.JLabel();
+        jButton_Search = new javax.swing.JButton();
 
         jButton2.setBackground(new java.awt.Color(240, 240, 240));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -97,6 +112,16 @@ public class AddMemberForm extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
 
+        jLabel8.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel8.setText("First Name:");
+
+        jTextField_FirstName1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jTextField_FirstName1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_FirstName1ActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
@@ -105,7 +130,7 @@ public class AddMemberForm extends javax.swing.JFrame {
         jLabel_FormTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel_FormTitle.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_FormTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_FormTitle.setText("Add Member");
+        jLabel_FormTitle.setText("Edit Member");
         jLabel_FormTitle.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -138,18 +163,23 @@ public class AddMemberForm extends javax.swing.JFrame {
         jLabel2.setText("First Name:");
 
         jTextField_FirstName.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
-        jButton_Add_.setBackground(new java.awt.Color(204, 204, 204));
-        jButton_Add_.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton_Add_.setText("Add New Member");
-        jButton_Add_.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton_Add_MouseClicked(evt);
+        jTextField_FirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_FirstNameActionPerformed(evt);
             }
         });
-        jButton_Add_.addActionListener(new java.awt.event.ActionListener() {
+
+        jButton_Edit_.setBackground(new java.awt.Color(204, 204, 204));
+        jButton_Edit_.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton_Edit_.setText("Edit Member Info");
+        jButton_Edit_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Edit_MouseClicked(evt);
+            }
+        });
+        jButton_Edit_.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_Add_ActionPerformed(evt);
+                jButton_Edit_ActionPerformed(evt);
             }
         });
 
@@ -207,11 +237,7 @@ public class AddMemberForm extends javax.swing.JFrame {
         });
 
         jLabel7.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel7.setText("Profile Picture");
-
-        jLabel_ImagePath.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        jLabel_ImagePath.setForeground(new java.awt.Color(0, 51, 204));
-        jLabel_ImagePath.setText("choose profile picture...");
+        jLabel7.setText("Profile Picture:");
 
         jButton_SelectProfilePicture_.setBackground(java.awt.Color.lightGray);
         jButton_SelectProfilePicture_.setText("select profile");
@@ -221,46 +247,95 @@ public class AddMemberForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel9.setText("Enter Member ID:");
+
+        jTextField_Id.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jTextField_Id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_IdActionPerformed(evt);
+            }
+        });
+
+        jLabel_Image.setBackground(new java.awt.Color(153, 204, 255));
+        jLabel_Image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel_Image.setOpaque(true);
+        jLabel_Image.setPreferredSize(new java.awt.Dimension(34, 14));
+
+        jLabel_ImagePath.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        jLabel_ImagePath.setForeground(new java.awt.Color(0, 51, 204));
+        jLabel_ImagePath.setText("choose picture...");
+        jLabel_ImagePath.setMaximumSize(new java.awt.Dimension(97, 23));
+        jLabel_ImagePath.setMinimumSize(new java.awt.Dimension(97, 23));
+        jLabel_ImagePath.setPreferredSize(new java.awt.Dimension(97, 23));
+
+        jButton_Search.setBackground(java.awt.Color.lightGray);
+        jButton_Search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton_Search.setText("search");
+        jButton_Search.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Search.setOpaque(true);
+        jButton_Search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_SearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel_EmptyLastName_)
-                            .addComponent(jLabel_EmptyFirstName_))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_CloseForm_, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_Add_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField_LastName)
-                    .addComponent(jTextField_FirstName)
-                    .addComponent(jTextField_Phone)
-                    .addComponent(jTextField_Email)
-                    .addComponent(jComboBox_Gender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel_EmptyPhone_)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
+                            .addComponent(jButton_Edit_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField_Email)
+                            .addComponent(jComboBox_Gender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel_ImagePath)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton_SelectProfilePicture_)))
-                        .addGap(0, 163, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(jTextField_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel_EmptyFirstName_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextField_Phone, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel_EmptyPhone_))
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextField_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel_EmptyLastName_))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField_Id, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel6))
+                                .addGap(0, 17, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton_SelectProfilePicture_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(31, 31, 31))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel_ImagePath, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,40 +343,54 @@ public class AddMemberForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_CloseForm_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField_Id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel_EmptyFirstName_)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_EmptyFirstName_))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel_EmptyLastName_)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_EmptyLastName_))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_Phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(jLabel_EmptyPhone_)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField_Phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_EmptyPhone_))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField_Email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox_Gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_ImagePath)
-                    .addComponent(jButton_SelectProfilePicture_))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButton_Add_, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox_Gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel7))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jButton_SelectProfilePicture_)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_ImagePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_Edit_, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)))
                 .addContainerGap())
         );
 
@@ -313,13 +402,15 @@ public class AddMemberForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel_CloseForm_MouseClicked
 
-    private void jButton_Add_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Add_ActionPerformed
-        // hide the jlabel "empty  massage"
+    private void jButton_Edit_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Edit_ActionPerformed
+        // add a new member
+        
+        // hide the jlabel "empty name massage"
         jLabel_EmptyFirstName_.setVisible(false);
         jLabel_EmptyLastName_.setVisible(false);
-        jLabel_EmptyPhone_.setVisible(false);   
+        jLabel_EmptyPhone_.setVisible(false);
         
-        // get the member data
+        //get member data   
         String fname = jTextField_FirstName.getText();
         String lname = jTextField_LastName.getText();
         String phone = jTextField_Phone.getText();
@@ -345,11 +436,12 @@ public class AddMemberForm extends javax.swing.JFrame {
             if(imagePath != null)
             {
                 try{
+                    Integer id =Integer.parseInt(jTextField_Id.getText());
                     Path path = Paths.get(imagePath);
                     img = Files.readAllBytes(path);
-                    member.addMember(fname, lname, phone, email, gender, img);
+                    member.editMember(id,fname, lname, phone, email, gender, img);
                 } catch(IOException ex) {
-                    Logger.getLogger(AddMemberForm.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EditMemberForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else
@@ -358,7 +450,7 @@ public class AddMemberForm extends javax.swing.JFrame {
             }
               
         }
-    }//GEN-LAST:event_jButton_Add_ActionPerformed
+    }//GEN-LAST:event_jButton_Edit_ActionPerformed
     
 
     
@@ -399,12 +491,63 @@ public class AddMemberForm extends javax.swing.JFrame {
             String path = fileChooser.getSelectedFile().getAbsolutePath();
             jLabel_ImagePath.setText(path);
             imagePath = path;
+            //display the image 
+            func.displayImage(112, 93,null, imagePath, jLabel_Image);
         }
     }//GEN-LAST:event_jButton_SelectProfilePicture_ActionPerformed
 
-    private void jButton_Add_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Add_MouseClicked
+    private void jButton_Edit_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Edit_MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_Add_MouseClicked
+    }//GEN-LAST:event_jButton_Edit_MouseClicked
+
+    private void jTextField_FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_FirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_FirstNameActionPerformed
+
+    private void jTextField_FirstName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_FirstName1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_FirstName1ActionPerformed
+
+    private void jTextField_IdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_IdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_IdActionPerformed
+
+    private void jButton_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SearchActionPerformed
+        // search member by id and díplay 
+        
+        // get member data
+        Member SelectedMember;
+        try {
+         // search member by id and díplay 
+            Integer id = Integer.parseInt(jTextField_Id.getText());
+          
+        SelectedMember = member.getMemberById(id);
+        if(SelectedMember !=null){
+           jTextField_Id.setText(String.valueOf(SelectedMember.getId()));
+        jTextField_FirstName.setText(SelectedMember.getFirstName());
+        jTextField_LastName.setText(SelectedMember.getLastName());
+        jTextField_Phone.setText(SelectedMember.getPhone());
+        jTextField_Email.setText(SelectedMember.getEmail());
+        jComboBox_Gender.setSelectedItem(SelectedMember.getGender());
+        
+        //display the member image
+        byte [] image = SelectedMember.getPicture();
+        //we will display the image using the imagetype
+        //so we will set the image path to null
+        
+        func.displayImage(112, 93,image, "", jLabel_Image); 
+        }
+        else{
+        JOptionPane.showMessageDialog(null, "No Member With This Id Is Found","Invalid Id", 3);  
+        }
+        
+        
+        } catch (SQLException | NumberFormatException ex) {
+            //Logger.getLogger(EditMemberForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Enter a Valid Member Id","Invalid Id", 3);          
+
+        }
+    }//GEN-LAST:event_jButton_SearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -424,14 +567,22 @@ public class AddMemberForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -444,14 +595,15 @@ public class AddMemberForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddMemberForm().setVisible(true);
+                new EditMemberForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton_Add_;
+    private javax.swing.JButton jButton_Edit_;
+    private javax.swing.JButton jButton_Search;
     private javax.swing.JButton jButton_SelectProfilePicture_;
     private javax.swing.JComboBox<String> jComboBox_Gender;
     private javax.swing.JLabel jLabel2;
@@ -460,17 +612,22 @@ public class AddMemberForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel_CloseForm_;
     private javax.swing.JLabel jLabel_EmptyFirstName_;
     private javax.swing.JLabel jLabel_EmptyLastName_;
     private javax.swing.JLabel jLabel_EmptyPhone_;
     private javax.swing.JLabel jLabel_FormTitle;
+    private javax.swing.JLabel jLabel_Image;
     private javax.swing.JLabel jLabel_ImagePath;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField_About;
     private javax.swing.JTextField jTextField_Email;
     private javax.swing.JTextField jTextField_FirstName;
+    private javax.swing.JTextField jTextField_FirstName1;
+    private javax.swing.JTextField jTextField_Id;
     private javax.swing.JTextField jTextField_LastName;
     private javax.swing.JTextField jTextField_Phone;
     // End of variables declaration//GEN-END:variables
