@@ -29,7 +29,7 @@ public class Member {
         this.lastName = _lname;
         this.phone = _phone;
         this.email = _email;
-        this.gender = gender;
+        this.gender = _gender;
         this.picture = _picture;
     }
     
