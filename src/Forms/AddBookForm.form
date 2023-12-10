@@ -75,13 +75,15 @@
                                       <Component id="jTextField_Author" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jTextField_Name" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jTextField_Publisher" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jSpinner_Quantity" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="jTextField_ISBN" min="-2" pref="208" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jTextField_Price" min="-2" pref="208" max="-2" attributes="0"/>
+                                              <Component id="jComboBox_Genre" min="-2" pref="208" max="-2" attributes="0"/>
+                                              <Component id="jTextField_ISBN" alignment="0" min="-2" pref="210" max="-2" attributes="0"/>
+                                          </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="jTextField_Price" min="-2" pref="208" max="-2" attributes="0"/>
-                                      <Component id="jComboBox_Genre" min="-2" pref="208" max="-2" attributes="0"/>
-                                      <Component id="jSpinner_Quantity" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
