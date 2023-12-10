@@ -21,6 +21,7 @@ public class Member {
     private String email;
     private String gender;
     private byte[] picture;
+    private Object query;
     
     public Member(int _id, String _fname, String _lname, String _phone, String _email, String _gender, byte[] _picture)
     {
@@ -191,6 +192,11 @@ public class Member {
         Classes.Func_Class func = new Classes.Func_Class();
                
         try {
+            if (query.equals("")) // if the user enter empty string make this the default select
+            {
+                query = "SELECT * FROM `members`";
+            }
+            
             ResultSet rs = func.getData("SELECT * FROM `members`");                   
             Member member;
             
@@ -204,5 +210,9 @@ public class Member {
         }
         
         return mList;
+    }
+
+    public ArrayList<Member> membersList(String query) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

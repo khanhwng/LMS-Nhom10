@@ -1,9 +1,13 @@
 package Forms;
 
 import Classes.Member;
+import java.sql.SQLException;
 import java.awt.Color;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
         // center the form
         this.setLocationRelativeTo(null);
         
-        // add a gray border to the panel
+        // add border to the panel
         Border panelHeaderBorder = BorderFactory.createMatteBorder(3,3,3,3,new Color(1, 152, 117));
         jPanel1.setBorder(panelHeaderBorder);
         
@@ -38,12 +42,20 @@ import javax.swing.table.DefaultTableModel;
         func.displayImage(75, 60,null, "/Images/member.png", jLabel_FormTitle);
         
         // customize the jtable
-        func.customTable(jTable_ListTable);
+        func.customTable(jTable_ListTable_);
         
         // customize the jtable header row
-        func.customTableHeader(jTable_ListTable, new Color(34, 167, 240), 16);
+        func.customTableHeader(jTable_ListTable_, new Color(36, 37, 42), 16);
         
-        populateJtableWithMembers();
+        //add a black border to the jlabelImage
+        Border JlabelImageBorder = BorderFactory.createMatteBorder(1, 1, 1, 1,new Color(0, 0, 0));
+        jLabel_Image.setBorder(JlabelImageBorder);
+        
+        // add a default image to the jlabel
+        func.displayImage(112, 93,null, "/Images/blank-profile.png", jLabel_Image);
+        
+        // display members in the jtable
+        populateJtableWithMembers("");
     }
 
     /**
@@ -61,9 +73,14 @@ import javax.swing.table.DefaultTableModel;
         jLabel_CloseForm_ = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField_Search = new javax.swing.JTextField();
-        jButton_Search = new javax.swing.JButton();
+        jButton_Search_ = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable_ListTable = new javax.swing.JTable();
+        jTable_ListTable_ = new javax.swing.JTable();
+        jLabel_Image = new javax.swing.JLabel();
+        jLabel_FullName = new javax.swing.JLabel();
+        jLabel_Phone = new javax.swing.JLabel();
+        jLabel_Email = new javax.swing.JLabel();
+        jLabel_Gender = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,7 +97,7 @@ import javax.swing.table.DefaultTableModel;
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel_FormTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+            .addComponent(jLabel_FormTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,18 +124,18 @@ import javax.swing.table.DefaultTableModel;
 
         jTextField_Search.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
-        jButton_Search.setBackground(java.awt.Color.lightGray);
-        jButton_Search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton_Search.setText("search");
-        jButton_Search.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton_Search.setOpaque(true);
-        jButton_Search.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Search_.setBackground(java.awt.Color.lightGray);
+        jButton_Search_.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton_Search_.setText("search");
+        jButton_Search_.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton_Search_.setOpaque(true);
+        jButton_Search_.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_SearchActionPerformed(evt);
+                jButton_Search_ActionPerformed(evt);
             }
         });
 
-        jTable_ListTable.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_ListTable_.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -126,7 +143,29 @@ import javax.swing.table.DefaultTableModel;
 
             }
         ));
-        jScrollPane2.setViewportView(jTable_ListTable);
+        jTable_ListTable_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_ListTable_MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable_ListTable_);
+
+        jLabel_Image.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel_Image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel_Image.setOpaque(true);
+        jLabel_Image.setPreferredSize(new java.awt.Dimension(34, 14));
+
+        jLabel_FullName.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel_FullName.setText("Full Name");
+
+        jLabel_Phone.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel_Phone.setText("Phone");
+
+        jLabel_Email.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel_Email.setText("Email");
+
+        jLabel_Gender.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel_Gender.setText("Gender");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -138,14 +177,21 @@ import javax.swing.table.DefaultTableModel;
                 .addComponent(jLabel_CloseForm_, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton_Search_, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_FullName)
+                    .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_Phone)
+                    .addComponent(jLabel_Email)
+                    .addComponent(jLabel_Gender))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,13 +202,26 @@ import javax.swing.table.DefaultTableModel;
                     .addComponent(jLabel_CloseForm_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_Search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(175, 175, 175))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton_Search_, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(191, 191, 191))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel_FullName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_Phone)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_Email)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_Gender)
+                        .addGap(0, 270, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,15 +243,57 @@ import javax.swing.table.DefaultTableModel;
         this.dispose();
     }//GEN-LAST:event_jLabel_CloseForm_MouseClicked
 
-    private void jButton_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_SearchActionPerformed
+    private void jButton_Search_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Search_ActionPerformed
+        // search and display data in the jtable
+        String value = jTextField_Search.getText();
+        // search by first and last name 
+        String query = "SELECT * FROM `members` WHERE `firstName` LIKE '%"+value+"%' or `lastName` LIKE '%"+value+"%'";
+        populateJtableWithMembers(query);
+    }//GEN-LAST:event_jButton_Search_ActionPerformed
 
-    // create a function to populate the jtable with member
-    public void populateJtableWithMembers()
+    private void jTable_ListTable_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ListTable_MouseClicked
+        // display the selected member data
+        Member SelectedMember;
+        try {
+            //search member by id and display data
+            Integer rowIndex = jTable_ListTable_.getSelectedRow(); // get the selected jtable row index
+            // get the member id from the jtable (the id is in the first column [0])
+            Integer id = Integer.parseInt(jTable_ListTable_.getModel().getValueAt(rowIndex, 0).toString()); 
+          
+        SelectedMember = member.getMemberById(id);
+        
+        if(SelectedMember !=null)
+        {
+           jLabel_FullName.setText(SelectedMember.getFirstName() + " " + SelectedMember.getLastName());
+           jLabel_Phone.setText(SelectedMember.getPhone());
+           jLabel_Email.setText(SelectedMember.getEmail());
+           jLabel_Gender.setText(SelectedMember.getGender());
+        
+        //display the member image
+        byte [] image = SelectedMember.getPicture();
+        //we will display the image using the imagetype
+        //so we will set the image path to null
+        
+        //func.displayImage(112, 93,image, "", jLabel_Image); 
+        }
+        else{
+        JOptionPane.showMessageDialog(null, "No Member With This Id Is Found","Invalid Id", 3);  
+        }
+        
+        
+        } catch (SQLException | NumberFormatException ex) {
+            Logger.getLogger(EditMemberForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Enter a Valid Member Id","Invalid Id", 3);          
+
+        }               
+    }//GEN-LAST:event_jTable_ListTable_MouseClicked
+
+    // create a function to populate the jtable with members
+    public void populateJtableWithMembers(String query)
     {
-
-        ArrayList<Classes.Member> membersList = member.membersList();
+        
+        ArrayList<Classes.Member> membersList = member.membersList(query);
+        // membersList = member.membersList(query);
         
         // jTable columns
         String[] colNames = {"ID", "F-Name", "L-Name", "Phone", "Email", "Gender"};
@@ -211,7 +312,7 @@ import javax.swing.table.DefaultTableModel;
         }
         
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
-        jTable_ListTable.setModel(model);
+        jTable_ListTable_.setModel(model);
         
     }
     /**
@@ -226,6 +327,7 @@ import javax.swing.table.DefaultTableModel;
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
+                    //javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -240,6 +342,7 @@ import javax.swing.table.DefaultTableModel;
             java.util.logging.Logger.getLogger(MemberListForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -250,14 +353,23 @@ import javax.swing.table.DefaultTableModel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_Search;
+    private javax.swing.JButton jButton_Search_;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel_CloseForm_;
+    private javax.swing.JLabel jLabel_Email;
     private javax.swing.JLabel jLabel_FormTitle;
+    private javax.swing.JLabel jLabel_FullName;
+    private javax.swing.JLabel jLabel_Gender;
+    private javax.swing.JLabel jLabel_Image;
+    private javax.swing.JLabel jLabel_Phone;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable_ListTable;
+    private javax.swing.JTable jTable_ListTable_;
     private javax.swing.JTextField jTextField_Search;
     // End of variables declaration//GEN-END:variables
+
+    //private void populateJtableWithMembers(String query) {
+       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    //}
 }
